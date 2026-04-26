@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Менің жазбаларым — NoteSpace{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .page-header h1 { font-size: 1.8rem; font-weight: 800; }
+    .page-header p { color: var(--text-muted); margin-top: 4px; }
+
+    .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .note-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+        transition: box-shadow 0.2s, transform 0.2s;
+        display: flex;
+        flex-direction: column;
+    }
+    .note-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .note-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .note-content {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .note-date {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+    }
+    .note-actions { display: flex; gap: 8px; margin-top: 14px; }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--text-muted);
+    }
+    .empty-state .icon { font-size: 4rem; margin-bottom: 16px; }
+    .empty-state h2 { font-size: 1.3rem; margin-bottom: 8px; color: var(--text); }
+    .empty-state p { margin-bottom: 24px; }
+</style>
+
+<div class="page-header">
+    <div>
+        <h1>👤 Менің жазбаларым</h1>
+        <p>{{ user.username }} пайдаланушысының жазбалары</p>
+    </div>
+    <a href="/notes/create/" class="btn btn-blue">+ Жаңа жазба</a>
+</div>
+
+{% if notes %}
+<div class="notes-grid">
+    {% for note in notes %}
+    <div class="note-card">
+        <div class="note-title">{{ note.title }}</div>
+        <div class="note-content">{{ note.content }}</div>
+        <div class="note-date">🕐 {{ note.created_at|date:"d M Y, H:i" }}</div>
+        <div class="note-actions">
+            <a href="/notes/{{ note.pk }}/edit/" class="btn btn-gray btn-sm">✏️ Өзгерту</a>
+            <a href="/notes/{{ note.pk }}/delete/" class="btn btn-red btn-sm">🗑️ Жою</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="icon">📋</div>
+    <h2>Жазбалар жоқ</h2>
+    <p>Бірінші жазбаңызды қосыңыз!</p>
+    <a href="/notes/create/" class="btn btn-blue btn-lg">+ Жазба қосу</a>
+</div>
+{% endif %}
+{% endblock %}

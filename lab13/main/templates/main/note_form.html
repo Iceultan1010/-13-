@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} жазба — NoteSpace{% endblock %}
+
+{% block content %}
+<style>
+    .form-container {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+    .form-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 36px;
+        box-shadow: var(--shadow-md);
+    }
+    .form-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+    .form-subtitle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 28px;
+    }
+    .form-group { margin-bottom: 20px; }
+    label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-bottom: 6px;
+        color: var(--text);
+    }
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--text);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background: var(--white);
+    }
+    input[type="text"]:focus, textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    }
+    textarea { resize: vertical; min-height: 160px; line-height: 1.6; }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-title">
+            {% if action == 'Қосу' %}✏️ Жаңа жазба{% else %}📝 Жазбаны өзгерту{% endif %}
+        </div>
+        <div class="form-subtitle">
+            {% if action == 'Қосу' %}Жаңа жазба қосыңыз{% else %}Жазбаны өзгертіңіз{% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Тақырыбы</label>
+                <input type="text" id="title" name="title" placeholder="Жазба тақырыбын енгізіңіз..."
+                       value="{{ note.title|default:'' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Мазмұны</label>
+                <textarea id="content" name="content" placeholder="Жазба мазмұнын енгізіңіз..." required>{{ note.content|default:'' }}</textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-blue btn-lg">
+                    {% if action == 'Қосу' %}+ Қосу{% else %}💾 Сақтау{% endif %}
+                </button>
+                <a href="/dashboard/" class="btn btn-gray btn-lg">Болдырмау</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

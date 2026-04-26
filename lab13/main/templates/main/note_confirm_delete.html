@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Жазбаны жою — NoteSpace{% endblock %}
+
+{% block content %}
+<style>
+    .confirm-container {
+        max-width: 500px;
+        margin: 40px auto;
+        text-align: center;
+    }
+    .confirm-card {
+        background: var(--white);
+        border: 1px solid #fca5a5;
+        border-radius: var(--radius);
+        padding: 40px 36px;
+        box-shadow: var(--shadow-md);
+    }
+    .confirm-icon { font-size: 3.5rem; margin-bottom: 20px; }
+    .confirm-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
+    .confirm-note {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 20px 0;
+        font-weight: 600;
+        color: var(--text);
+    }
+    .confirm-warning { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 28px; }
+    .confirm-actions { display: flex; gap: 12px; justify-content: center; }
+</style>
+
+<div class="confirm-container">
+    <div class="confirm-card">
+        <div class="confirm-icon">🗑️</div>
+        <div class="confirm-title">Жазбаны жою</div>
+        <div class="confirm-note">"{{ note.title }}"</div>
+        <div class="confirm-warning">Бұл әрекетті кері қайтару мүмкін емес!</div>
+        <div class="confirm-actions">
+            <form method="post" style="margin:0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-red btn-lg">🗑️ Иә, жою</button>
+            </form>
+            <a href="/dashboard/" class="btn btn-gray btn-lg">Болдырмау</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
